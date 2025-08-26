@@ -1,0 +1,29 @@
+package com.back.domotica.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+import java.util.List;
+
+
+@Data
+@Entity
+public class Grupo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idGrupo;
+
+    @NotBlank(message = "O nome do grupo é obrigatório")
+    @Column(nullable = false, unique = true)
+    private String nome;
+
+    @ManyToMany
+    @JoinTable(
+            name = "grupo_dispositivo",
+            joinColumns = @JoinColumn(name = "idGrupo"),
+            inverseJoinColumns = @JoinColumn(name = "idDispositivo")
+    )
+    private List<Dispositivo> dispositivos;
+}
