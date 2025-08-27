@@ -32,39 +32,27 @@ public class HistoryController {
     @GetMapping
     public ResponseEntity<Map<String, List<HistoricoSimplesDTO>>> listarHistoricoCompleto() {
 
-        List<HistoricoSimplesDTO> comodos = comodoRepository.findAll()
-                .stream()
-                .map(c -> new HistoricoSimplesDTO("Comodo", c.getNome(), null))
-                .collect(Collectors.toList());
-
         List<HistoricoSimplesDTO> cenas = cenaRepository.findAll()
                 .stream()
-                .map(c -> new HistoricoSimplesDTO("Cena", c.getNome(), null))
+                .map(c -> new HistoricoSimplesDTO("Cena", c.getNome()))
                 .collect(Collectors.toList());
 
         List<HistoricoSimplesDTO> acoesCena = acaoCenaRepository.findAll()
                 .stream()
-                .map(a -> {
-                    String nomeComodo = a.getDispositivo() != null && a.getDispositivo().getComodo() != null
-                            ? a.getDispositivo().getComodo().getNome()
-                            : null;
-                    return new HistoricoSimplesDTO("AcaoCena", a.getNome(), nomeComodo);
-                })
+                .map(a -> new HistoricoSimplesDTO("AcaoCena", a.getNome()))
                 .collect(Collectors.toList());
 
         List<HistoricoSimplesDTO> grupos = grupoRepository.findAll()
                 .stream()
-                .map(g -> new HistoricoSimplesDTO("Grupo", g.getNome(), null))
+                .map(g -> new HistoricoSimplesDTO("Grupo", g.getNome()))
                 .collect(Collectors.toList());
 
         List<HistoricoSimplesDTO> dispositivos = dispositivoRepository.findAll()
                 .stream()
-                .map(d -> new HistoricoSimplesDTO("Dispositivo", d.getNome(),
-                        d.getComodo() != null ? d.getComodo().getNome() : null))
+                .map(d -> new HistoricoSimplesDTO("Dispositivo", d.getNome()))
                 .collect(Collectors.toList());
 
         Map<String, List<HistoricoSimplesDTO>> response = new HashMap<>();
-        response.put("comodos", comodos);
         response.put("cenas", cenas);
         response.put("acoesCena", acoesCena);
         response.put("grupos", grupos);
@@ -72,4 +60,6 @@ public class HistoryController {
 
         return ResponseEntity.ok(response);
     }
+
+
 }

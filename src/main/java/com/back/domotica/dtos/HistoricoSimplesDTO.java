@@ -8,5 +8,4 @@ import lombok.Data;
 public class HistoricoSimplesDTO {
     private String entidade;
     private String nome;
-    private String nomeComodo;
 }
