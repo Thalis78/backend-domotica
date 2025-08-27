@@ -1,7 +1,6 @@
 package com.back.domotica.controllers;
 
 import com.back.domotica.entities.Dispositivo;
-import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.services.DispositivoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,6 @@ public class DispositivoController {
         return dispositivoService.listarTodos();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Dispositivo> buscarPorId(@PathVariable Long id) {
-        return dispositivoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Dispositivo não encontrado com id: " + id));
-    }
-
     @PostMapping
     public ResponseEntity<Dispositivo> criar(@Valid @RequestBody Dispositivo dispositivo) {
         Dispositivo salvo = dispositivoService.salvar(dispositivo);
@@ -43,6 +35,18 @@ public class DispositivoController {
     public ResponseEntity<Dispositivo> atualizar(@PathVariable Long id, @Valid @RequestBody Dispositivo dispositivo) {
         Dispositivo atualizado = dispositivoService.atualizar(id, dispositivo);
         return ResponseEntity.ok(atualizado);
+    }
+
+    @PutMapping("/{id}/ligar")
+    public ResponseEntity<Dispositivo> ligarDispositivo(@PathVariable Long id) {
+        Dispositivo ligado = dispositivoService.ligar(id);
+        return ResponseEntity.ok(ligado);
+    }
+
+    @PutMapping("/{id}/desligar")
+    public ResponseEntity<Dispositivo> desligarDispositivo(@PathVariable Long id) {
+        Dispositivo desligado = dispositivoService.desligar(id);
+        return ResponseEntity.ok(desligado);
     }
 
     @DeleteMapping("/{id}")

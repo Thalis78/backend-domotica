@@ -27,10 +27,6 @@ public class ComodoService {
         return comodoRepository.findAll();
     }
 
-    public Optional<Comodo> buscarPorId(Long id) {
-        return comodoRepository.findById(id);
-    }
-
     public Comodo atualizar(Long id, Comodo comodoAtualizado) {
         return comodoRepository.findById(id)
                 .map(comodo -> {

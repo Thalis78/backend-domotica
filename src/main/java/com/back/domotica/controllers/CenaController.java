@@ -26,13 +26,6 @@ public class CenaController {
         return cenaService.listarTodas();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cena> buscarPorId(@PathVariable Long id) {
-        return cenaService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Cena não encontrada com id: " + id));
-    }
-
     @PostMapping
     public ResponseEntity<Cena> criar(@Valid @RequestBody Cena cena) {
         Cena salvo = cenaService.salvar(cena);
@@ -49,5 +42,17 @@ public class CenaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         cenaService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/ligar")
+    public ResponseEntity<Cena> ligar(@PathVariable Long id) {
+        Cena ligada = cenaService.ligar(id);
+        return ResponseEntity.ok(ligada);
+    }
+
+    @PutMapping("/{id}/desligar")
+    public ResponseEntity<Cena> desligar(@PathVariable Long id) {
+        Cena desligada = cenaService.desligar(id);
+        return ResponseEntity.ok(desligada);
     }
 }

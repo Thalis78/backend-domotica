@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AcaoCenaService {
@@ -25,10 +24,6 @@ public class AcaoCenaService {
 
     public List<AcaoCena> listarTodas() {
         return acaoCenaRepository.findAll();
-    }
-
-    public Optional<AcaoCena> buscarPorId(Long id) {
-        return acaoCenaRepository.findById(id);
     }
 
     public AcaoCena atualizar(Long id, AcaoCena acaoAtualizada) {
@@ -50,5 +45,13 @@ public class AcaoCenaService {
             throw new ResourceNotFoundException("Ação de Cena não encontrada com id: " + id);
         }
         acaoCenaRepository.deleteById(id);
+    }
+
+    public AcaoCena executar(Long id) {
+        AcaoCena acao = acaoCenaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ação de Cena não encontrada com id: " + id));
+
+        acao.executar();
+        return acaoCenaRepository.save(acao);
     }
 }

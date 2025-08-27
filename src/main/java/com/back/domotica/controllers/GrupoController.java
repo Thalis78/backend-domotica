@@ -1,7 +1,6 @@
 package com.back.domotica.controllers;
 
 import com.back.domotica.entities.Grupo;
-import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.services.GrupoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,6 @@ public class GrupoController {
     @GetMapping
     public List<Grupo> listarTodos() {
         return grupoService.listarTodos();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Grupo> buscarPorId(@PathVariable Long id) {
-        return grupoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Grupo não encontrado com id: " + id));
     }
 
     @PostMapping

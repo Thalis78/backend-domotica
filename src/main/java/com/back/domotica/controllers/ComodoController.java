@@ -26,13 +26,6 @@ public class ComodoController {
         return comodoService.listarTodos();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Comodo> buscarPorId(@PathVariable Long id) {
-        return comodoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Cômodo não encontrado com id: " + id));
-    }
-
     @PostMapping
     public ResponseEntity<Comodo> criar(@Valid @RequestBody Comodo comodo) {
         Comodo salvo = comodoService.salvar(comodo);

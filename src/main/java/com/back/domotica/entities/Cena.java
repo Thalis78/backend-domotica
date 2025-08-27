@@ -17,4 +17,12 @@ public class Cena {
     private String nome;
 
     private boolean ativa;
+
+    public void ligar() {
+        this.ativa = true;
+    }
+
+    public void desligar() {
+        this.ativa = false;
+    }
 }

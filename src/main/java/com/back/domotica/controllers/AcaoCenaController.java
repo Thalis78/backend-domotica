@@ -26,13 +26,6 @@ public class AcaoCenaController {
         return acaoCenaService.listarTodas();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AcaoCena> buscarPorId(@PathVariable Long id) {
-        return acaoCenaService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Ação da Cena não encontrada com id: " + id));
-    }
-
     @PostMapping
     public ResponseEntity<AcaoCena> criar(@Valid @RequestBody AcaoCena acaoCena) {
         AcaoCena salvo = acaoCenaService.salvar(acaoCena);
@@ -49,5 +42,11 @@ public class AcaoCenaController {
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         acaoCenaService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/executar")
+    public ResponseEntity<AcaoCena> executar(@PathVariable Long id) {
+        AcaoCena executada = acaoCenaService.executar(id);
+        return ResponseEntity.ok(executada);
     }
 }

@@ -29,4 +29,14 @@ public class AcaoCena {
     @ManyToOne
     @JoinColumn(name = "idDispositivo")
     private Dispositivo dispositivo;
+
+    public void executar() {
+        if (dispositivo != null) {
+            if (estadoDesejado) {
+                dispositivo.ligar();
+            } else {
+                dispositivo.desligar();
+            }
+        }
+    }
 }

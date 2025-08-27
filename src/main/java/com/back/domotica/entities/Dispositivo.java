@@ -16,10 +16,19 @@ public class Dispositivo {
     @NotBlank(message = "O nome do dispositivo é obrigatório")
     @Column(nullable = false, unique = true)
     private String nome;
+
     private boolean estado;
 
     @NotNull(message = "O cômodo do dispositivo é obrigatório")
     @ManyToOne
     @JoinColumn(name = "idComodo", nullable = false)
     private Comodo comodo;
+
+    public void ligar() {
+        this.estado = true;
+    }
+
+    public void desligar() {
+        this.estado = false;
+    }
 }

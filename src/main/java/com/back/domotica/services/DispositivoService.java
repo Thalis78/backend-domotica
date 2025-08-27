@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DispositivoService {
@@ -27,8 +26,9 @@ public class DispositivoService {
         return dispositivoRepository.findAll();
     }
 
-    public Optional<Dispositivo> buscarPorId(Long id) {
-        return dispositivoRepository.findById(id);
+    public Dispositivo buscarPorId(Long id) {
+        return dispositivoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Dispositivo não encontrado com id: " + id));
     }
 
     public Dispositivo atualizar(Long id, Dispositivo dispositivoAtualizado) {
@@ -40,6 +40,18 @@ public class DispositivoService {
                     return dispositivoRepository.save(dispositivo);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Dispositivo não encontrado com id: " + id));
+    }
+
+    public Dispositivo ligar(Long id) {
+        Dispositivo dispositivo = buscarPorId(id);
+        dispositivo.ligar();
+        return dispositivoRepository.save(dispositivo);
+    }
+
+    public Dispositivo desligar(Long id) {
+        Dispositivo dispositivo = buscarPorId(id);
+        dispositivo.desligar();
+        return dispositivoRepository.save(dispositivo);
     }
 
     public void deletar(Long id) {

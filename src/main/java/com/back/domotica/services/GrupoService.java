@@ -27,10 +27,6 @@ public class GrupoService {
         return grupoRepository.findAll();
     }
 
-    public Optional<Grupo> buscarPorId(Long id) {
-        return grupoRepository.findById(id);
-    }
-
     public Grupo atualizar(Long id, Grupo grupoAtualizado) {
         return grupoRepository.findById(id)
                 .map(grupo -> {

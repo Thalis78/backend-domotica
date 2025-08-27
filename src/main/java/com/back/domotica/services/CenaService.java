@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CenaService {
@@ -27,10 +26,6 @@ public class CenaService {
         return cenaRepository.findAll();
     }
 
-    public Optional<Cena> buscarPorId(Long id) {
-        return cenaRepository.findById(id);
-    }
-
     public Cena atualizar(Long id, Cena cenaAtualizada) {
         return cenaRepository.findById(id)
                 .map(cena -> {
@@ -41,10 +36,27 @@ public class CenaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cena não encontrada com id: " + id));
     }
 
+    public Cena ligar(Long id) {
+        Cena cena = buscarPorId(id);
+        cena.ligar();
+        return cenaRepository.save(cena);
+    }
+
+    public Cena desligar(Long id) {
+        Cena cena = buscarPorId(id);
+        cena.desligar();
+        return cenaRepository.save(cena);
+    }
+
     public void deletar(Long id) {
         if (!cenaRepository.existsById(id)) {
             throw new ResourceNotFoundException("Cena não encontrada com id: " + id);
         }
         cenaRepository.deleteById(id);
+    }
+
+    public Cena buscarPorId(Long id) {
+        return cenaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cena não encontrada com id: " + id));
     }
 }
