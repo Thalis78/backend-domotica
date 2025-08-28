@@ -23,6 +23,10 @@ public class ComodoService {
         return comodoRepository.save(comodo);
     }
 
+    public Comodo buscarPorId(Long id) {
+        return comodoRepository.getById(id);
+    }
+
     public List<Comodo> listarTodos() {
         return comodoRepository.findAll();
     }
