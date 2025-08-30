@@ -22,8 +22,10 @@ public class Grupo {
     @ManyToMany
     @JoinTable(
             name = "grupo_dispositivo",
-            joinColumns = @JoinColumn(name = "idGrupo"),
-            inverseJoinColumns = @JoinColumn(name = "idDispositivo")
+            joinColumns = @JoinColumn(name = "id_grupo"),
+            inverseJoinColumns = @JoinColumn(name = "id_dispositivo")
     )
     private List<Dispositivo> dispositivos;
+
+
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class AcaoCena {
@@ -26,17 +28,46 @@ public class AcaoCena {
     @JoinColumn(name = "idCena")
     private Cena cena;
 
-    @ManyToOne
-    @JoinColumn(name = "idDispositivo")
-    private Dispositivo dispositivo;
+    @ManyToMany
+    @JoinTable(
+            name = "acao_cena_dispositivos",
+            joinColumns = @JoinColumn(name = "idAcao"),
+            inverseJoinColumns = @JoinColumn(name = "idDispositivo")
+    )
+    private List<Dispositivo> dispositivos;
+
+    @ManyToMany
+    @JoinTable(
+            name = "acao_cena_grupos",
+            joinColumns = @JoinColumn(name = "idAcao"),
+            inverseJoinColumns = @JoinColumn(name = "idGrupo")
+    )
+    private List<Grupo> grupos;
 
     public void executar() {
-        if (dispositivo != null) {
-            if (estadoDesejado) {
-                dispositivo.ligar();
-            } else {
-                dispositivo.desligar();
+        if (dispositivos != null) {
+            for (Dispositivo dispositivo : dispositivos) {
+                if (estadoDesejado) {
+                    dispositivo.ligar();
+                } else {
+                    dispositivo.desligar();
+                }
+            }
+        }
+
+        if (grupos != null) {
+            for (Grupo grupo : grupos) {
+                if (grupo.getDispositivos() != null) {
+                    for (Dispositivo dispositivo : grupo.getDispositivos()) {
+                        if (estadoDesejado) {
+                            dispositivo.ligar();
+                        } else {
+                            dispositivo.desligar();
+                        }
+                    }
+                }
             }
         }
     }
+
 }

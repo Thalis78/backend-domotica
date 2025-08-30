@@ -7,6 +7,7 @@ import com.back.domotica.services.ComodoService;
 import com.back.domotica.services.DispositivoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,6 @@ public class DispositivoController {
     public DispositivoController(DispositivoService dispositivoService) {
         this.dispositivoService = dispositivoService;
     }
-
 
     @GetMapping
     public List<Dispositivo> listarTodos() {
@@ -56,22 +56,33 @@ public class DispositivoController {
         return ResponseEntity.ok(atualizado);
     }
 
-
     @PutMapping("/{id}/ligar")
-    public ResponseEntity<Dispositivo> ligarDispositivo(@PathVariable Long id) {
-        Dispositivo ligado = dispositivoService.ligar(id);
-        return ResponseEntity.ok(ligado);
+    public ResponseEntity<String> ligarDispositivo(@PathVariable Long id) {
+        Dispositivo dispositivo = dispositivoService.buscarPorId(id);
+
+        if (dispositivo.getEstado()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dispositivo já está ligado.");
+        }
+
+        dispositivoService.ligar(id);
+        return ResponseEntity.ok("Dispositivo ligado com sucesso");
     }
 
     @PutMapping("/{id}/desligar")
-    public ResponseEntity<Dispositivo> desligarDispositivo(@PathVariable Long id) {
-        Dispositivo desligado = dispositivoService.desligar(id);
-        return ResponseEntity.ok(desligado);
+    public ResponseEntity<String> desligarDispositivo(@PathVariable Long id) {
+        Dispositivo dispositivo = dispositivoService.buscarPorId(id);
+
+        if (!dispositivo.getEstado()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dispositivo já está desligado.");
+        }
+
+        dispositivoService.desligar(id);
+        return ResponseEntity.ok("Dispositivo desligado com sucesso");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
         dispositivoService.deletar(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Dispositivo apagado com sucesso");
     }
 }

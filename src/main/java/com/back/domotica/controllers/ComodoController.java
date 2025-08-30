@@ -1,7 +1,6 @@
 package com.back.domotica.controllers;
 
 import com.back.domotica.entities.Comodo;
-import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.services.ComodoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,15 @@ public class ComodoController {
     }
 
     @GetMapping
-    public List<Comodo> listarTodos() {
-        return comodoService.listarTodos();
+    public ResponseEntity<List<Comodo>> listarTodos() {
+        List<Comodo> comodos = comodoService.listarTodos();
+        return ResponseEntity.ok(comodos);
     }
 
     @PostMapping
     public ResponseEntity<Comodo> criar(@Valid @RequestBody Comodo comodo) {
         Comodo salvo = comodoService.salvar(comodo);
-        return ResponseEntity.ok(salvo);
+        return ResponseEntity.status(201).body(salvo);
     }
 
     @PutMapping("/{id}")
@@ -39,8 +39,8 @@ public class ComodoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
         comodoService.deletar(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Cômodo apagado com sucesso");
     }
 }

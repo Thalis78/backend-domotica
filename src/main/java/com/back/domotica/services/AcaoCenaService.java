@@ -34,11 +34,13 @@ public class AcaoCenaService {
                     acao.setIntervaloSegundos(acaoAtualizada.getIntervaloSegundos());
                     acao.setEstadoDesejado(acaoAtualizada.isEstadoDesejado());
                     acao.setCena(acaoAtualizada.getCena());
-                    acao.setDispositivo(acaoAtualizada.getDispositivo());
+                    acao.setDispositivos(acaoAtualizada.getDispositivos());
+                    acao.setGrupos(acaoAtualizada.getGrupos());
                     return acaoCenaRepository.save(acao);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Ação de Cena não encontrada com id: " + id));
     }
+
 
     public void deletar(Long id) {
         if (!acaoCenaRepository.existsById(id)) {

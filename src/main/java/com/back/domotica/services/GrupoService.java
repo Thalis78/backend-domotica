@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GrupoService {
@@ -26,6 +25,12 @@ public class GrupoService {
     public List<Grupo> listarTodos() {
         return grupoRepository.findAll();
     }
+
+    public Grupo buscarPorId(Long id) {
+        return grupoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Grupo não encontrado com id: " + id));
+    }
+
 
     public Grupo atualizar(Long id, Grupo grupoAtualizado) {
         return grupoRepository.findById(id)
