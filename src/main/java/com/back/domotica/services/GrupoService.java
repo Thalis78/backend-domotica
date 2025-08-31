@@ -1,8 +1,11 @@
 package com.back.domotica.services;
 
+import com.back.domotica.entities.Dispositivo;
 import com.back.domotica.entities.Grupo;
 import com.back.domotica.exceptions.ResourceNotFoundException;
+import com.back.domotica.repositories.DispositivoRepository;
 import com.back.domotica.repositories.GrupoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,8 @@ import java.util.List;
 
 @Service
 public class GrupoService {
+    @Autowired
+    private DispositivoRepository dispositivoRepository;
 
     private final GrupoRepository grupoRepository;
 
@@ -47,5 +52,29 @@ public class GrupoService {
             throw new ResourceNotFoundException("Grupo não encontrado com id: " + id);
         }
         grupoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void ligarGrupo(Long idGrupo) {
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+
+        grupo.ligarTodosDispositivos();
+
+        for (Dispositivo dispositivo : grupo.getDispositivos()) {
+            dispositivoRepository.save(dispositivo);
+        }
+    }
+
+    @Transactional
+    public void desligarGrupo(Long idGrupo) {
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+
+        grupo.desligarTodosDispositivos();
+
+        for (Dispositivo dispositivo : grupo.getDispositivos()) {
+            dispositivoRepository.save(dispositivo);
+        }
     }
 }

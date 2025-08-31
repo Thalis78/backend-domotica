@@ -27,5 +27,21 @@ public class Grupo {
     )
     private List<Dispositivo> dispositivos;
 
+    public void ligarTodosDispositivos() {
+        if (dispositivos != null) {
+            for (Dispositivo dispositivo : dispositivos) {
+                dispositivo.ligar();
+            }
+        }
+    }
+
+    public void desligarTodosDispositivos() {
+        if (dispositivos != null) {
+            for (Dispositivo dispositivo : dispositivos) {
+                dispositivo.desligar();
+            }
+        }
+    }
+
 
 }

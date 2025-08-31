@@ -72,4 +72,17 @@ public class GrupoController {
         grupoService.deletar(id);
         return ResponseEntity.ok("Grupo apagado com sucesso");
     }
+
+    @PostMapping("/{id}/ligar")
+    public ResponseEntity<String> ligarGrupo(@PathVariable Long id) {
+        grupoService.ligarGrupo(id);
+        return ResponseEntity.ok("Todos os dispositivos do grupo foram ligados.");
+    }
+
+    @PostMapping("/{id}/desligar")
+    public ResponseEntity<String> desligarGrupo(@PathVariable Long id) {
+        grupoService.desligarGrupo(id);
+        return ResponseEntity.ok("Todos os dispositivos do grupo foram desligados.");
+    }
+
 }
