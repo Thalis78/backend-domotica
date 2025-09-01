@@ -2,16 +2,21 @@ package com.back.domotica.controllers;
 
 import com.back.domotica.entities.Comodo;
 import com.back.domotica.services.ComodoService;
+import com.back.domotica.services.DispositivoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comodos")
 public class ComodoController {
+
+    @Autowired
+    private DispositivoService dispositivoService;
 
     private final ComodoService comodoService;
 
@@ -39,8 +44,9 @@ public class ComodoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+
         comodoService.deletar(id);
-        return ResponseEntity.ok("Cômodo apagado com sucesso");
+        return ResponseEntity.ok().body(Map.of("message", "Cômodo apagado com sucesso"));
     }
 }

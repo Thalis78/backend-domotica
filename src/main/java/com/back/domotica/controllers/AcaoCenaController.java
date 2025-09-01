@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/acaocenas")
@@ -77,16 +78,17 @@ public class AcaoCenaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
         acaoCenaService.deletar(id);
-        return ResponseEntity.ok("Ação da cena apagada com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Ação da cena apagada com sucesso"));
     }
 
     @PutMapping("/{id}/executar")
-    public ResponseEntity<String> executar(@PathVariable Long id) {
+    public ResponseEntity<?> executar(@PathVariable Long id) {
         acaoCenaService.executar(id);
-        return ResponseEntity.ok("Ação executada com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Ação executada com sucesso"));
     }
+
 
     private List<Dispositivo> validarDispositivos(List<Dispositivo> dispositivos) {
         if (dispositivos == null || dispositivos.isEmpty()) return new ArrayList<>();

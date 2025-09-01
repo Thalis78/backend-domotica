@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/grupos")
@@ -68,21 +69,22 @@ public class GrupoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
         grupoService.deletar(id);
-        return ResponseEntity.ok("Grupo apagado com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Grupo apagado com sucesso"));
     }
 
     @PostMapping("/{id}/ligar")
-    public ResponseEntity<String> ligarGrupo(@PathVariable Long id) {
+    public ResponseEntity<?> ligarGrupo(@PathVariable Long id) {
         grupoService.ligarGrupo(id);
-        return ResponseEntity.ok("Todos os dispositivos do grupo foram ligados.");
+        return ResponseEntity.ok(Map.of("message", "Todos os dispositivos do grupo foram ligados."));
     }
 
     @PostMapping("/{id}/desligar")
-    public ResponseEntity<String> desligarGrupo(@PathVariable Long id) {
+    public ResponseEntity<?> desligarGrupo(@PathVariable Long id) {
         grupoService.desligarGrupo(id);
-        return ResponseEntity.ok("Todos os dispositivos do grupo foram desligados.");
+        return ResponseEntity.ok(Map.of("message", "Todos os dispositivos do grupo foram desligados."));
     }
+
 
 }

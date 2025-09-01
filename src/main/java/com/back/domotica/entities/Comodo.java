@@ -23,6 +23,6 @@ public class Comodo {
     private String nome;
 
     @OneToMany(mappedBy = "comodo", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonManagedReference // << ADICIONADO AQUI
+    @JsonManagedReference
     private List<Dispositivo> dispositivos = new ArrayList<>();
 }

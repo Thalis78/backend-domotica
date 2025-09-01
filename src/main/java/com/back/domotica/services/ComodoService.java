@@ -1,8 +1,12 @@
 package com.back.domotica.services;
 
 import com.back.domotica.entities.Comodo;
+import com.back.domotica.entities.Dispositivo;
+import com.back.domotica.entities.Grupo;
 import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.repositories.ComodoRepository;
+import com.back.domotica.repositories.GrupoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +15,12 @@ import java.util.Optional;
 
 @Service
 public class ComodoService {
+
+    @Autowired
+    private DispositivoService dispositivoService;
+
+    @Autowired
+    private GrupoRepository grupoRepository;
 
     private final ComodoRepository comodoRepository;
 
@@ -40,10 +50,23 @@ public class ComodoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cômodo não encontrado com id: " + id));
     }
 
-    public void deletar(Long id) {
-        if (!comodoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Cômodo não encontrado com id: " + id);
+    @Transactional
+    public void deletar(Long idComodo) {
+        Comodo comodo = buscarPorId(idComodo);
+
+        for (Dispositivo dispositivo : comodo.getDispositivos()) {
+            List<Grupo> grupos = grupoRepository.findGruposByDispositivoId(dispositivo.getIdDispositivo());
+
+            for (Grupo grupo : grupos) {
+                grupo.getDispositivos().removeIf(d -> d.getIdDispositivo().equals(dispositivo.getIdDispositivo()));
+                grupoRepository.save(grupo);
+            }
+
+            dispositivoService.deletar(dispositivo.getIdDispositivo());
         }
-        comodoRepository.deleteById(id);
+
+        comodoRepository.delete(comodo);
     }
+
+
 }

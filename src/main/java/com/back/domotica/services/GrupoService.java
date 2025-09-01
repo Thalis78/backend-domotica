@@ -5,6 +5,7 @@ import com.back.domotica.entities.Grupo;
 import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.repositories.DispositivoRepository;
 import com.back.domotica.repositories.GrupoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,12 +48,14 @@ public class GrupoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Grupo não encontrado com id: " + id));
     }
 
-    public void deletar(Long id) {
-        if (!grupoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Grupo não encontrado com id: " + id);
-        }
-        grupoRepository.deleteById(id);
+    public void deletar(Long idGrupo) {
+        Grupo grupo = grupoRepository.findById(idGrupo)
+                .orElseThrow(() -> new EntityNotFoundException("Grupo não encontrado"));
+
+        grupoRepository.delete(grupo);
     }
+
+
 
     @Transactional
     public void ligarGrupo(Long idGrupo) {

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cenas")
@@ -39,33 +40,36 @@ public class CenaController {
         return ResponseEntity.ok(atualizado);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        cenaService.deletar(id);
-        return ResponseEntity.ok("Cena apagada com sucesso");
-    }
-
     @PutMapping("/{id}/ligar")
-    public ResponseEntity<String> ligar(@PathVariable Long id) {
+    public ResponseEntity<?> ligar(@PathVariable Long id) {
         Cena cena = cenaService.buscarPorId(id);
 
         if (cena.isAtiva()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cena já está ligada.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Cena já está ligada."));
         }
 
         cenaService.ligar(id);
-        return ResponseEntity.ok("Cena ligada com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Cena ligada com sucesso"));
     }
 
     @PutMapping("/{id}/desligar")
-    public ResponseEntity<String> desligar(@PathVariable Long id) {
+    public ResponseEntity<?> desligar(@PathVariable Long id) {
         Cena cena = cenaService.buscarPorId(id);
 
         if (!cena.isAtiva()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cena já está desligada.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Cena já está desligada."));
         }
 
         cenaService.desligar(id);
-        return ResponseEntity.ok("Cena desligada com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Cena desligada com sucesso"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        cenaService.deletar(id);
+        return ResponseEntity.ok(Map.of("message", "Cena apagada com sucesso"));
+    }
+
 }
