@@ -57,10 +57,6 @@ public class AcaoCenaService {
 
     public void removerDispositivo(Long idDispositivo) {
         List<AcaoCena> acoes = acaoCenaRepository.findByDispositivos_IdDispositivo(idDispositivo);
-        if (acoes.isEmpty()) {
-            throw new ResourceNotFoundException("Nenhuma Ação de Cena encontrada com o Dispositivo id: " + idDispositivo);
-        }
-
         for (AcaoCena acao : acoes) {
             acao.getDispositivos().removeIf(dispositivo -> dispositivo.getIdDispositivo().equals(idDispositivo));
             acaoCenaRepository.save(acao);
@@ -69,10 +65,6 @@ public class AcaoCenaService {
 
     public void removerGrupo(Long idGrupo) {
         List<AcaoCena> acoes = acaoCenaRepository.findByGrupos_IdGrupo(idGrupo);
-        if (acoes.isEmpty()) {
-            throw new ResourceNotFoundException("Nenhuma Ação de Cena encontrada com o Grupo id: " + idGrupo);
-        }
-
         for (AcaoCena acao : acoes) {
             acao.getGrupos().removeIf(grupo -> grupo.getIdGrupo().equals(idGrupo));
             acaoCenaRepository.save(acao);
