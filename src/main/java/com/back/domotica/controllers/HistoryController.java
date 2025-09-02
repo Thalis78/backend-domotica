@@ -14,20 +14,22 @@ import java.util.stream.Collectors;
 @RequestMapping("/history")
 public class HistoryController {
 
-    @Autowired
-    private ComodoRepository comodoRepository;
+    private final CenaRepository cenaRepository;
+    private final AcaoCenaRepository acaoCenaRepository;
+    private final GrupoRepository grupoRepository;
+    private final DispositivoRepository dispositivoRepository;
 
-    @Autowired
-    private CenaRepository cenaRepository;
+    public HistoryController(
+            CenaRepository cenaRepository,
+            AcaoCenaRepository acaoCenaRepository,
+            GrupoRepository grupoRepository,
+            DispositivoRepository dispositivoRepository) {
 
-    @Autowired
-    private AcaoCenaRepository acaoCenaRepository;
-
-    @Autowired
-    private GrupoRepository grupoRepository;
-
-    @Autowired
-    private DispositivoRepository dispositivoRepository;
+        this.cenaRepository = cenaRepository;
+        this.acaoCenaRepository = acaoCenaRepository;
+        this.grupoRepository = grupoRepository;
+        this.dispositivoRepository = dispositivoRepository;
+    }
 
     @GetMapping
     public ResponseEntity<Map<String, List<HistoricoSimplesDTO>>> listarHistoricoCompleto() {

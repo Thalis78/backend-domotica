@@ -14,13 +14,13 @@ import java.util.List;
 
 @Service
 public class GrupoService {
-    @Autowired
-    private DispositivoRepository dispositivoRepository;
 
+    private final DispositivoRepository dispositivoRepository;
     private final GrupoRepository grupoRepository;
 
     @Autowired
-    public GrupoService(GrupoRepository grupoRepository) {
+    public GrupoService(DispositivoRepository dispositivoRepository, GrupoRepository grupoRepository) {
+        this.dispositivoRepository = dispositivoRepository;
         this.grupoRepository = grupoRepository;
     }
 
@@ -54,8 +54,6 @@ public class GrupoService {
 
         grupoRepository.delete(grupo);
     }
-
-
 
     @Transactional
     public void ligarGrupo(Long idGrupo) {

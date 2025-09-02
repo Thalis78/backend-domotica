@@ -2,6 +2,7 @@ package com.back.domotica.controllers;
 
 import com.back.domotica.entities.Dispositivo;
 import com.back.domotica.entities.Grupo;
+import com.back.domotica.services.AcaoCenaService;
 import com.back.domotica.services.DispositivoService;
 import com.back.domotica.services.GrupoService;
 import jakarta.validation.Valid;
@@ -17,13 +18,15 @@ import java.util.Map;
 @RequestMapping("/grupos")
 public class GrupoController {
 
-    @Autowired
-    private DispositivoService dispositivoService;
 
+    private final DispositivoService dispositivoService;
+    private final AcaoCenaService acaoCenaService;
     private final GrupoService grupoService;
 
     @Autowired
-    public GrupoController(GrupoService grupoService) {
+    public GrupoController(DispositivoService dispositivoService, AcaoCenaService acaoCenaService, GrupoService grupoService) {
+        this.dispositivoService = dispositivoService;
+        this.acaoCenaService = acaoCenaService;
         this.grupoService = grupoService;
     }
 
@@ -70,6 +73,7 @@ public class GrupoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
+        acaoCenaService.removerGrupo(id);
         grupoService.deletar(id);
         return ResponseEntity.ok(Map.of("message", "Grupo apagado com sucesso"));
     }

@@ -1,8 +1,12 @@
 package com.back.domotica.services;
 
 import com.back.domotica.entities.AcaoCena;
+import com.back.domotica.entities.Dispositivo;
+import com.back.domotica.entities.Grupo;
 import com.back.domotica.exceptions.ResourceNotFoundException;
 import com.back.domotica.repositories.AcaoCenaRepository;
+import com.back.domotica.repositories.DispositivoRepository;
+import com.back.domotica.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +52,33 @@ public class AcaoCenaService {
         }
         acaoCenaRepository.deleteById(id);
     }
+
+
+
+    public void removerDispositivo(Long idDispositivo) {
+        List<AcaoCena> acoes = acaoCenaRepository.findByDispositivos_IdDispositivo(idDispositivo);
+        if (acoes.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhuma Ação de Cena encontrada com o Dispositivo id: " + idDispositivo);
+        }
+
+        for (AcaoCena acao : acoes) {
+            acao.getDispositivos().removeIf(dispositivo -> dispositivo.getIdDispositivo().equals(idDispositivo));
+            acaoCenaRepository.save(acao);
+        }
+    }
+
+    public void removerGrupo(Long idGrupo) {
+        List<AcaoCena> acoes = acaoCenaRepository.findByGrupos_IdGrupo(idGrupo);
+        if (acoes.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhuma Ação de Cena encontrada com o Grupo id: " + idGrupo);
+        }
+
+        for (AcaoCena acao : acoes) {
+            acao.getGrupos().removeIf(grupo -> grupo.getIdGrupo().equals(idGrupo));
+            acaoCenaRepository.save(acao);
+        }
+    }
+
 
     public AcaoCena executar(Long id) {
         AcaoCena acao = acaoCenaRepository.findById(id)

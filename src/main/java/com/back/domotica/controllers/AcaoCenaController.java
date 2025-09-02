@@ -22,20 +22,19 @@ import java.util.Map;
 @RequestMapping("/acaocenas")
 public class AcaoCenaController {
 
-    @Autowired
-    private DispositivoService dispositivoService;
-
-    @Autowired
-    private GrupoService grupoService;
-
-    @Autowired
-    private CenaService cenaService;
-
     private final AcaoCenaService acaoCenaService;
+    private final DispositivoService dispositivoService;
+    private final GrupoService grupoService;
+    private final CenaService cenaService;
 
     @Autowired
-    public AcaoCenaController(AcaoCenaService acaoCenaService) {
+    public AcaoCenaController(AcaoCenaService acaoCenaService,DispositivoService dispositivoService,
+                              GrupoService grupoService,
+                              CenaService cenaService) {
         this.acaoCenaService = acaoCenaService;
+        this.dispositivoService = dispositivoService;
+        this.grupoService = grupoService;
+        this.cenaService = cenaService;
     }
 
     @GetMapping

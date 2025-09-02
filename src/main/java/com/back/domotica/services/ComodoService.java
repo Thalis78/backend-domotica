@@ -16,18 +16,21 @@ import java.util.Optional;
 @Service
 public class ComodoService {
 
-    @Autowired
-    private DispositivoService dispositivoService;
-
-    @Autowired
-    private GrupoRepository grupoRepository;
-
+    private final DispositivoService dispositivoService;
+    private final GrupoRepository grupoRepository;
     private final ComodoRepository comodoRepository;
 
     @Autowired
-    public ComodoService(ComodoRepository comodoRepository) {
+    public ComodoService(
+            DispositivoService dispositivoService,
+            GrupoRepository grupoRepository,
+            ComodoRepository comodoRepository) {
+
+        this.dispositivoService = dispositivoService;
+        this.grupoRepository = grupoRepository;
         this.comodoRepository = comodoRepository;
     }
+
 
     public Comodo salvar(Comodo comodo) {
         return comodoRepository.save(comodo);

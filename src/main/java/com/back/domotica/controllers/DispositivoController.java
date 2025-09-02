@@ -3,6 +3,7 @@ package com.back.domotica.controllers;
 import com.back.domotica.dtos.DispositivoDTO;
 import com.back.domotica.entities.Comodo;
 import com.back.domotica.entities.Dispositivo;
+import com.back.domotica.services.AcaoCenaService;
 import com.back.domotica.services.ComodoService;
 import com.back.domotica.services.DispositivoService;
 import jakarta.validation.Valid;
@@ -19,10 +20,12 @@ public class DispositivoController {
 
     private final DispositivoService dispositivoService;
     private final ComodoService comodoService;
+    private final AcaoCenaService acaoCenaService;
 
-    public DispositivoController(DispositivoService dispositivoService, ComodoService comodoService) {
+    public DispositivoController(DispositivoService dispositivoService, ComodoService comodoService, AcaoCenaService acaoCenaService) {
         this.dispositivoService = dispositivoService;
         this.comodoService = comodoService;
+        this.acaoCenaService = acaoCenaService;
     }
 
     @GetMapping
@@ -81,6 +84,7 @@ public class DispositivoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
+        acaoCenaService.removerDispositivo(id);
         dispositivoService.deletar(id);
         return ResponseEntity.ok(Map.of("message", "Dispositivo apagado com sucesso"));
     }

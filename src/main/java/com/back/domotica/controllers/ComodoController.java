@@ -15,8 +15,6 @@ import java.util.Map;
 @RequestMapping("/comodos")
 public class ComodoController {
 
-    @Autowired
-    private DispositivoService dispositivoService;
 
     private final ComodoService comodoService;
 
