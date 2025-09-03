@@ -84,8 +84,13 @@ public class AcaoCenaController {
 
     @PutMapping("/{id}/executar")
     public ResponseEntity<?> executar(@PathVariable Long id) {
-        acaoCenaService.executar(id);
-        return ResponseEntity.ok(Map.of("message", "Ação executada com sucesso"));
+        try {
+            AcaoCena acaoCena = acaoCenaService.executar(id);
+            return ResponseEntity.ok(acaoCena);
+        } catch (IllegalStateException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("error", "Não é possível ativar a cena porque ela está inativa"));        }
     }
 
 
