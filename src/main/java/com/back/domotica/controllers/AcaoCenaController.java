@@ -85,8 +85,8 @@ public class AcaoCenaController {
     @PutMapping("/{id}/executar")
     public ResponseEntity<?> executar(@PathVariable Long id) {
         try {
-            AcaoCena acaoCena = acaoCenaService.executar(id);
-            return ResponseEntity.ok(acaoCena);
+            acaoCenaService.executar(id);
+            return ResponseEntity.ok(Map.of("message", "Ação executada com sucesso"));
         } catch (IllegalStateException e) {
             return ResponseEntity
                     .badRequest()
