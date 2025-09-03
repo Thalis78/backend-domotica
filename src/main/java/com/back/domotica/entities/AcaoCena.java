@@ -18,10 +18,6 @@ public class AcaoCena {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    private Integer ordem;
-
-    private Long intervaloSegundos;
-
     private boolean estadoDesejado;
 
     @ManyToOne

@@ -16,7 +16,7 @@ public class Cena {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    private boolean ativa;
+    private boolean ativa = true;
 
     public void ligar() {
         this.ativa = true;

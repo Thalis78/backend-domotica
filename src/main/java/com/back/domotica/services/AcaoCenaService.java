@@ -34,8 +34,6 @@ public class AcaoCenaService {
         return acaoCenaRepository.findById(id)
                 .map(acao -> {
                     acao.setNome(acaoAtualizada.getNome());
-                    acao.setOrdem(acaoAtualizada.getOrdem());
-                    acao.setIntervaloSegundos(acaoAtualizada.getIntervaloSegundos());
                     acao.setEstadoDesejado(acaoAtualizada.isEstadoDesejado());
                     acao.setCena(acaoAtualizada.getCena());
                     acao.setDispositivos(acaoAtualizada.getDispositivos());
@@ -75,6 +73,10 @@ public class AcaoCenaService {
     public AcaoCena executar(Long id) {
         AcaoCena acao = acaoCenaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ação de Cena não encontrada com id: " + id));
+
+        if (!acao.getCena().isAtiva()) {
+            throw new IllegalStateException("Não é possível ativar a cena porque ela está inativa.");
+        }
 
         acao.executar();
         return acaoCenaRepository.save(acao);
