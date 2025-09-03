@@ -2,6 +2,7 @@ package com.back.domotica.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -12,7 +13,8 @@ public class Dispositivo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDispositivo;
 
-    @Column(nullable = false)
+    @NotBlank(message = "O nome do dispositivo é obrigatório")
+    @Column(nullable = false, unique = true)
     private String nome;
 
     private Boolean estado;
